@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
+    public GameObject titleScreen;
     public List<GameObject> targets;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
@@ -19,11 +20,6 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        isGameActive = true;
-        score = 0;
-
-        StartCoroutine(SpawnTarget());
-        UpdateScore(0);
         
     }
 
@@ -62,6 +58,19 @@ public class GameManager : MonoBehaviour
         {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+    public void StartGame(int difficulty)
+    {
+        isGameActive = true;
+        score = 0;
+
+        StartCoroutine(SpawnTarget());
+        UpdateScore(0);
+
+        titleScreen.gameObject.SetActive(false);
+
+        spawnRate /= difficulty;
+    }
 
 
     }
