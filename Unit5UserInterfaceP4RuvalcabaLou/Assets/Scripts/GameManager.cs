@@ -8,6 +8,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
+    private bool paused;
+    public GameObject pauseScreen;
+    private int lives;
+    public TextMeshProUGUI livesText;
     public GameObject titleScreen;
     public List<GameObject> targets;
     public TextMeshProUGUI scoreText;
@@ -27,6 +31,11 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ChangePaused();
+        }
     }
 
     IEnumerator SpawnTarget()
@@ -66,10 +75,37 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(SpawnTarget());
         UpdateScore(0);
+        UpdateLives(3);
 
         titleScreen.gameObject.SetActive(false);
 
         spawnRate /= difficulty;
+    }
+
+    void ChangePaused()
+    {
+        if (!paused)
+        {
+            paused = true;
+            pauseScreen.SetActive(true);
+            Time.timeScale = 0;
+        }
+        else
+        {
+            paused = false;
+            pauseScreen.SetActive(false);
+            Time.timeScale = 1;
+        }
+    }
+
+    public void UpdateLives(int livesToChange)
+    {
+        lives += livesToChange;
+        livesText.text = "Lives: " + lives;
+        if (lives <= 0)
+        {
+            GameOver();
+        }
     }
 
 
